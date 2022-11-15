@@ -1,8 +1,13 @@
+// ignore_for_file: prefer_final_fields
+
 import '../database/dbhelper.dart';
+
+import '../database/transaction_operations.dart';
 import '../models/transaction.dart';
 import 'providerclass.dart';
 
 class Transactions extends ProviderClass {
+  final dbProvider = DBHelper.instance;
   List<Transaction> _transactionsList = [];
 
   List<Transaction> get transactionsList {
@@ -34,4 +39,9 @@ class Transactions extends ProviderClass {
       );
     }
   }
+
+  // Future<List> getTransactions() async {
+  //   final sqlDB = await dbProvider.database;
+  //   List<Transaction> transactionsList = sqlDB.
+  // }
 }

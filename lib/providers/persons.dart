@@ -1,16 +1,11 @@
 import 'package:flutter/foundation.dart';
-import '../database/dbhelper.dart';
+
+import '../database/person_operations.dart';
 import '../models/person.dart';
 import 'providerclass.dart';
 
 class Persons extends ProviderClass {
-  List<Person> _persons = [
-    Person(
-      id: UniqueKey().toString(),
-      name: "Akhmadjon Akbarov",
-      phoneNumber: "998999921684",
-    )
-  ];
+  List<Person> _persons = [];
 
   List<Person> get personsList {
     return [..._persons];
@@ -22,7 +17,7 @@ class Persons extends ProviderClass {
       Person newPerson = Person(
         id: UniqueKey().toString(),
         name: name,
-        phoneNumber: phoneNumber,
+        phoneNumber: phoneNumber.toString(),
       );
       _persons.add(newPerson);
       notifyListeners();
@@ -33,12 +28,21 @@ class Persons extends ProviderClass {
   }
 
   @override
-  void update({String? personId}) {}
+  void update({Person? person}) {
+    if (person != null) {
+      int indexOfPerson =
+          _persons.indexWhere((element) => element.id == person.id);
+      _persons[indexOfPerson] = person;
+      notifyListeners();
+      PersonOperations.updatePerson(person: person);
+    }
+  }
 
   @override
   void delete({String? personId}) {
     _persons.removeWhere((element) => element.id == personId);
     notifyListeners();
+    PersonOperations.deletePerson(personId: personId);
   }
 
   Future getPersons() async {
