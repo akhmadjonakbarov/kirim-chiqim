@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kirim_chiqim/providers/transactions.dart';
+import 'providers/transactions.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/persons.dart';
@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(primarySwatch: Colors.teal),
         title: 'Material App',
         home: HomeScreen(),

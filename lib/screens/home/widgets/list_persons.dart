@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../models/person.dart';
 import '../../../providers/persons.dart';
-import './list_item.dart';
+import 'list_item.dart';
 
 class ListPersons extends StatelessWidget {
   const ListPersons({

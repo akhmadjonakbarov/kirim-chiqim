@@ -17,18 +17,14 @@ class TransactionsOperations {
     }
   }
 
-  static Future<List<Transaction>> getTransactionsNyUserId(
-      {String? personId}) async {
+  static Future<List<Transaction>> getTransactions({String? personId}) async {
     final sqlDB = await dbHelperProvider.database;
-    var result = [];
+
     List<Map<String, dynamic>> transactionsList =
         await sqlDB.query(_transactionTable);
-    for (var transaction in transactionsList) {
-      if (transaction['personId'] == personId) {
-        result.add(transaction);
-      }
-    }
-    return result as List<Transaction>;
+    return transactionsList
+        .map((transaction) => Transaction.fromMap(transaction))
+        .toList();
   }
 
   static Future<int> updateTransactions({Transaction? transaction}) async {

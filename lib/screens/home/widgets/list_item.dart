@@ -29,9 +29,9 @@ class ListItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const DetailScreen();
+                return DetailScreen(person:person);
               },
-            ),  
+            ),
           );
         },
         title: Text(

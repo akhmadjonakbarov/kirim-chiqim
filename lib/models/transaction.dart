@@ -5,28 +5,29 @@ class Transaction {
   String id;
   String personid;
   double quantity;
-  bool kc; // kc = false kirim bo'ladi
+  bool isEntry; // kc = false kirim bo'ladi
   DateTime dateTime;
   Transaction({
     required this.id,
     required this.personid,
     required this.quantity,
-    required this.kc,
+    required this.isEntry,
     required this.dateTime,
   });
+ 
 
   Transaction copyWith({
     String? id,
     String? personid,
     double? quantity,
-    bool? kc,
+    bool? isEntry,
     DateTime? dateTime,
   }) {
     return Transaction(
       id: id ?? this.id,
       personid: personid ?? this.personid,
       quantity: quantity ?? this.quantity,
-      kc: kc ?? this.kc,
+      isEntry: isEntry ?? this.isEntry,
       dateTime: dateTime ?? this.dateTime,
     );
   }
@@ -36,7 +37,7 @@ class Transaction {
       'id': id,
       'personid': personid,
       'quantity': quantity,
-      'kc': kc,
+      'isEntry': isEntry,
       'dateTime': dateTime.millisecondsSinceEpoch,
     };
   }
@@ -46,38 +47,38 @@ class Transaction {
       id: map['id'] as String,
       personid: map['personid'] as String,
       quantity: map['quantity'] as double,
-      kc: map['kc'] as bool,
+      isEntry: map['isEntry'] as bool,
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Transaction.fromJson(String source) =>
-      Transaction.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Transaction.fromJson(String source) => Transaction.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Transaction(id: $id, personid: $personid, quantity: $quantity, kc: $kc, dateTime: $dateTime)';
+    return 'Transaction(id: $id, personid: $personid, quantity: $quantity, isEntry: $isEntry, dateTime: $dateTime)';
   }
 
   @override
   bool operator ==(covariant Transaction other) {
     if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.personid == personid &&
-        other.quantity == quantity &&
-        other.kc == kc &&
-        other.dateTime == dateTime;
+  
+    return 
+      other.id == id &&
+      other.personid == personid &&
+      other.quantity == quantity &&
+      other.isEntry == isEntry &&
+      other.dateTime == dateTime;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-        personid.hashCode ^
-        quantity.hashCode ^
-        kc.hashCode ^
-        dateTime.hashCode;
+      personid.hashCode ^
+      quantity.hashCode ^
+      isEntry.hashCode ^
+      dateTime.hashCode;
   }
 }

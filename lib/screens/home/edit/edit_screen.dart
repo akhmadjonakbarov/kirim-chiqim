@@ -35,14 +35,15 @@ class EditScreen extends StatelessWidget {
           title: const Text("Ma'lumot o'zgartirildi."),
           actions: [
             ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) {
-                      return HomeScreen();
-                    },
-                  ));
-                },
-                child: const Text("Ok"))
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) {
+                    return HomeScreen();
+                  },
+                ));
+              },
+              child: const Text("Ok"),
+            )
           ],
         );
       },

@@ -5,7 +5,9 @@ import '../models/person.dart';
 import 'providerclass.dart';
 
 class Persons extends ProviderClass {
-  List<Person> _persons = [];
+  List<Person> _persons = [
+    Person(id: "personid1", name: "Akhmadjon Akbariv", phoneNumber: "1324567")
+  ];
 
   List<Person> get personsList {
     return [..._persons];
@@ -45,7 +47,7 @@ class Persons extends ProviderClass {
     PersonOperations.deletePerson(personId: personId);
   }
 
-  Future getPersons() async {
+  Future<void> getPersons() async {
     List<Person> persons = await PersonOperations.getPersons();
 
     if (persons.isNotEmpty) {
