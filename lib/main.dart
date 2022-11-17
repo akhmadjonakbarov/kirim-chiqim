@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'providers/transactions.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/persons.dart';
+import 'providers/transactions.dart';
 import 'screens/screens.dart';
 
 void main() => runApp(const MyApp());

@@ -5,3 +5,4 @@ abstract class ProviderClass with ChangeNotifier {
   void update() {}
   void delete() {}
 }
+  
