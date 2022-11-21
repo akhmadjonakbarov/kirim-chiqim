@@ -8,3 +8,4 @@ Kirim-chiqimlarni hisoblaydigan dastur
 
 ## Local Changing
 1.Added new branch 
+2. Switched main branch
