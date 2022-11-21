@@ -3,19 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../models/transaction.dart';
 
-class ListItem extends StatelessWidget {
-  const ListItem({
+class TransactionListItem extends StatelessWidget {
+  final Transaction transaction;
+  const TransactionListItem({
     Key? key,
     required this.transaction,
   }) : super(key: key);
-
-  final Transaction transaction;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(top: 5),
-      color: transaction.isEntry ? Colors.green : Colors.red,
+      color: transaction.isEntry  == 1 ? Colors.green : Colors.red,
       child: ListTile(
         title: Text(
           "${transaction.quantity}",
@@ -41,12 +40,10 @@ class ListItem extends StatelessWidget {
             ),
           ),
           child: Icon(
-            transaction.isEntry
+            transaction.isEntry == 1
                 ? Icons.arrow_downward
                 : Icons.arrow_upward,
-            color: transaction.isEntry
-                ? Colors.green
-                : Colors.red,
+            color: transaction.isEntry == 1 ? Colors.green : Colors.red,
           ),
         ),
       ),

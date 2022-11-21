@@ -20,12 +20,13 @@ class DBHelper {
     await db.execute("""
       CREATE TABLE transactions(
         id PRIMARY KEY NOT NULL,
-        personid TEXT NOT NULL,
-        date     DATETIME NOT NULL,
+        personId TEXT NOT NULL,
+        dateTime     DATETIME NOT NULL,
         quantity REAL NOT NULL,
-        kc       BOOL NOT NULL,
-        FK_transactions_person STRING NOT NULL,
-        FOREIGN KEY (FK_transactions_person) REFERENCES person(id)
+        isEntry       int NOT NULL,
+         CONSTRAINT fk_transaction
+    FOREIGN KEY (personId)
+    REFERENCES persons(id)
       );""");
 
     await db.execute("""

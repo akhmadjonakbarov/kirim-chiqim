@@ -2,16 +2,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kirim_chiqim/screens/home/edit/edit_screen.dart';
-import '../../../providers/persons.dart';
+import 'package:kirim_chiqim/screens/home/edit_person/edit_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/person.dart';
+import '../../../providers/persons.dart';
 import '../../detail/detail_screen.dart';
 
-class ListItem extends StatelessWidget {
+class PersonListItem extends StatelessWidget {
   Person person;
-  ListItem({
+  PersonListItem({
     Key? key,
     required this.person,
   }) : super(key: key);
@@ -29,7 +29,7 @@ class ListItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return DetailScreen(person:person);
+                return DetailScreen(person: person);
               },
             ),
           );
@@ -56,7 +56,7 @@ class ListItem extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return EditScreen(
+                        return EditPersonScreen(
                           person: person,
                         );
                       },
@@ -68,17 +68,18 @@ class ListItem extends StatelessWidget {
                   color: Colors.green,
                 )),
             IconButton(
-                splashRadius: 20,
-                onPressed: () {
-                  _deletePerson(
-                    context,
-                    personId: person.id,
-                  );
-                },
-                icon: Icon(
-                  Icons.delete,
-                  color: Theme.of(context).errorColor,
-                ))
+              splashRadius: 20,
+              onPressed: () {
+                _deletePerson(
+                  context,
+                  personId: person.id,
+                );
+              },
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).errorColor,
+              ),
+            )
           ],
         ),
       ),

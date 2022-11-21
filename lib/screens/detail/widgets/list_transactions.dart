@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import './transaction_list_item.dart';
 import '../../../models/person.dart';
 import '../../../models/transaction.dart';
 import '../../../providers/transactions.dart';
-import './list_item.dart';
 
 class ListTransactions extends StatelessWidget {
   const ListTransactions({
@@ -21,43 +21,50 @@ class ListTransactions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        alignment: Alignment.center,
         decoration: const BoxDecoration(),
         child: FutureBuilder(
           future: Provider.of<Transactions>(context)
               .getTransactionsByPerson(personId: person.id),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                  width: 100,
-                  height: 100,
-                  child: const CircularProgressIndicator());
-            }
-            return Consumer<Transactions>(
-              builder: (context, transactions, _) {
-                if (transactions.transactionsList != null) {
+            if (snapshot.hasError) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                            "Sizda xatolik bor iltimos keyinroq urunib ko'ring. \n${snapshot.error}",
+                            style: GoogleFonts.nunito()),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Ok"),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
+            } else if (snapshot.hasData) {
+              return Consumer<Transactions>(
+                builder: (context, transactions, _) {
                   return ListView.builder(
                     itemCount: transactions.transactionsList.length,
                     itemBuilder: (context, index) {
                       Transaction transaction =
                           transactions.transactionsList[index];
-                      return ListItem(transaction: transaction);
+                      return TransactionListItem(
+                        transaction: transaction,
+                      );
                     },
                   );
-                } else {
-                  return Center(
-                    child: Text(
-                      "${person.name}da hech qanday tranzaksiyalar mavjud emas",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.nunito(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  );
-                }
-              },
-            );
+                },
+              );
+            }
+            return const Text("");
           },
         ),
       ),

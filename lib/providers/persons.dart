@@ -6,7 +6,11 @@ import 'providerclass.dart';
 
 class Persons extends ProviderClass {
   List<Person> _persons = [
-    Person(id: "personid1", name: "Akhmadjon Akbariv", phoneNumber: "1324567")
+    Person(
+      id: "personid1",
+      name: "Akhmadjon Akbarov",
+      phoneNumber: "1324567",
+    ),
   ];
 
   List<Person> get personsList {
@@ -21,7 +25,7 @@ class Persons extends ProviderClass {
         name: name,
         phoneNumber: phoneNumber.toString(),
       );
-      _persons.add(newPerson);
+      _persons.insert(0, newPerson);
       notifyListeners();
       PersonOperations.insertPersons(
         data: newPerson.toMap(),

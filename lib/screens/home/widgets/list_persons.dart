@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../models/person.dart';
 import '../../../providers/persons.dart';
-import 'list_item.dart';
+import 'person_list_item.dart';
 
 class ListPersons extends StatelessWidget {
   const ListPersons({
@@ -26,7 +26,7 @@ class ListPersons extends StatelessWidget {
                     itemCount: persons.personsList.length,
                     itemBuilder: (context, index) {
                       Person person = persons.personsList[index];
-                      return ListItem(
+                      return PersonListItem(
                         person: person,
                       );
                     },

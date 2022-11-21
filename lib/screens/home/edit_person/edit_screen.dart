@@ -1,16 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
+
+// flutter packages
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import 'package:kirim_chiqim/providers/persons.dart';
-import 'package:kirim_chiqim/screens/screens.dart';
-
+// my packages
+import '../../../providers/persons.dart';
+import '../../screens.dart';
 import '../../../models/person.dart';
 
-class EditScreen extends StatelessWidget {
+class EditPersonScreen extends StatelessWidget {
   Person person;
-  EditScreen({
+  EditPersonScreen({
     Key? key,
     required this.person,
   }) : super(key: key);

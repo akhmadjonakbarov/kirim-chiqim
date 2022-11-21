@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kirim_chiqim/screens/home/widgets/list_persons.dart';
+import 'package:kirim_chiqim/widgets/app_drawer.dart';
 import '../../providers/persons.dart';
 
 import 'package:provider/provider.dart';
@@ -113,13 +114,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               AppBar(
-                title: const Text("Mijozlar"),
+                title: Text("Mijozlar", style: GoogleFonts.nunito()),
                 actions: [
                   IconButton(
                     onPressed: () {},

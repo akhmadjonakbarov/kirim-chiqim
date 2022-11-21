@@ -3,29 +3,28 @@ import 'dart:convert';
 
 class Transaction {
   String id;
-  String personid;
-  double quantity;
-  bool isEntry; // kc = false kirim bo'ladi
+  String personId;
+  num quantity;
+  int isEntry; // kc = false kirim bo'ladi
   DateTime dateTime;
   Transaction({
     required this.id,
-    required this.personid,
+    required this.personId,
     required this.quantity,
-    required this.isEntry,
+    this.isEntry = 0,
     required this.dateTime,
   });
- 
 
   Transaction copyWith({
     String? id,
-    String? personid,
-    double? quantity,
-    bool? isEntry,
+    String? personId,
+    num? quantity,
+    int? isEntry,
     DateTime? dateTime,
   }) {
     return Transaction(
       id: id ?? this.id,
-      personid: personid ?? this.personid,
+      personId: personId ?? this.personId,
       quantity: quantity ?? this.quantity,
       isEntry: isEntry ?? this.isEntry,
       dateTime: dateTime ?? this.dateTime,
@@ -35,7 +34,7 @@ class Transaction {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'personid': personid,
+      'personId': personId,
       'quantity': quantity,
       'isEntry': isEntry,
       'dateTime': dateTime.millisecondsSinceEpoch,
@@ -45,40 +44,40 @@ class Transaction {
   factory Transaction.fromMap(Map<String, dynamic> map) {
     return Transaction(
       id: map['id'] as String,
-      personid: map['personid'] as String,
-      quantity: map['quantity'] as double,
-      isEntry: map['isEntry'] as bool,
+      personId: map['personId'] as String,
+      quantity: map['quantity'] as num,
+      isEntry: map['isEntry'] as int,
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Transaction.fromJson(String source) => Transaction.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Transaction.fromJson(String source) =>
+      Transaction.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Transaction(id: $id, personid: $personid, quantity: $quantity, isEntry: $isEntry, dateTime: $dateTime)';
+    return 'Transaction(id: $id, personId: $personId, quantity: $quantity, isEntry: $isEntry, dateTime: $dateTime)';
   }
 
   @override
   bool operator ==(covariant Transaction other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.id == id &&
-      other.personid == personid &&
-      other.quantity == quantity &&
-      other.isEntry == isEntry &&
-      other.dateTime == dateTime;
+
+    return other.id == id &&
+        other.personId == personId &&
+        other.quantity == quantity &&
+        other.isEntry == isEntry &&
+        other.dateTime == dateTime;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      personid.hashCode ^
-      quantity.hashCode ^
-      isEntry.hashCode ^
-      dateTime.hashCode;
+        personId.hashCode ^
+        quantity.hashCode ^
+        isEntry.hashCode ^
+        dateTime.hashCode;
   }
 }

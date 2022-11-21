@@ -3,29 +3,13 @@
 import 'package:flutter/widgets.dart';
 
 import '../database/dbhelper.dart';
-
 import '../database/transaction_operations.dart';
 import '../models/transaction.dart';
-import 'providerclass.dart';
+import './providerclass.dart';
 
 class Transactions extends ProviderClass {
   final dbProvider = DBHelper.instance;
-  List<Transaction> _transactionsList = [
-    Transaction(
-      id: UniqueKey().toString(),
-      personid: "personid1",
-      quantity: 6000,
-      dateTime: DateTime.now(),
-      isEntry: false,
-    ),
-    Transaction(
-      id: UniqueKey().toString(),
-      personid: "personid1",
-      quantity: 10000,
-      dateTime: DateTime.now(),
-      isEntry: true,
-    )
-  ];
+  List<Transaction> _transactionsList = [];
 
   List<Transaction> get transactionsList {
     return [..._transactionsList];
@@ -34,7 +18,7 @@ class Transactions extends ProviderClass {
   double get totalSumEntry {
     double sum = 0;
     for (var transaction in _transactionsList) {
-      if (transaction.isEntry) {
+      if (transaction.isEntry == 1) {
         sum = sum + transaction.quantity;
       } else {}
     }
@@ -44,9 +28,9 @@ class Transactions extends ProviderClass {
   double get totalSumExpenditure {
     double sum = 0;
     for (var transaction in _transactionsList) {
-      if (transaction.isEntry != true) {
+      if (transaction.isEntry != 1) {
         sum = sum + transaction.quantity;
-      } else {}
+      }
     }
     return sum;
   }
@@ -58,7 +42,32 @@ class Transactions extends ProviderClass {
   }
 
   @override
-  void add() {}
+  void add({String? personId, num? moneyQuantity, int? isEntry}) {
+    Transaction newTransaction;
+    if (isEntry != 1) {
+      newTransaction = Transaction(
+        id: UniqueKey().toString(),
+        personId: personId!,
+        quantity: moneyQuantity!,
+        dateTime: DateTime.now(),
+      );
+    } else {
+      newTransaction = Transaction(
+        id: UniqueKey().toString(),
+        personId: personId!,
+        quantity: moneyQuantity!,
+        isEntry: isEntry!,
+        dateTime: DateTime.now(),
+      );
+    }
+
+    _transactionsList.insert(0, newTransaction);
+    notifyListeners();
+
+    TransactionsOperations.insertTransaction(
+      data: newTransaction.toMap(),
+    );
+  }
 
   @override
   void update({Transaction? transaction}) {
@@ -83,14 +92,19 @@ class Transactions extends ProviderClass {
     }
   }
 
-  Future<void> getTransactionsByPerson({String? personId}) async {
+  Future<List<Transaction>> getTransactionsByPerson({String? personId}) async {
+    List<Transaction> _list = [];
     List<Transaction> transactions =
         await TransactionsOperations.getTransactions();
-    for (var transaction in transactions) {
-      if (transaction.personid == personId) {
-        _transactionsList.add(transaction);
+    try {
+      for (var tx in transactions) {
+        if (tx.personId == personId) {
+          _list.add(tx);
+        }
       }
+      return _list;
+    } catch (e) {
+      rethrow;
     }
-    notifyListeners();
   }
 }

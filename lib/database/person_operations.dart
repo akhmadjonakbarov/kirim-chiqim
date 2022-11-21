@@ -1,6 +1,5 @@
-import 'dbhelper.dart';
-
 import '../models/person.dart';
+import 'dbhelper.dart';
 
 class PersonOperations {
   PersonOperations? personOperations;
