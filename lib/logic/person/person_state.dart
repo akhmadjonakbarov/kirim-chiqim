@@ -14,7 +14,7 @@ class PersonLoading extends PersonState {}
 
 class PersonLoaded extends PersonState {
   List<Person> personsLoaded;
-  PersonLoaded({required this.personsLoaded});
+  PersonLoaded({required this.personsLoaded}) : super(persons: personsLoaded);
 }
 
 class PersonAdded extends PersonState {
