@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/rendering/sliver_grid.dart';
-import 'package:flutter/src/rendering/sliver.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kirim_chiqim/logic/models/person.dart';
 import 'package:kirim_chiqim/logic/person/person_cubit.dart';
@@ -21,7 +19,7 @@ class SearchBar extends SearchDelegate {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
       onPressed: () => close(context, null),
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
     );
   }
 
