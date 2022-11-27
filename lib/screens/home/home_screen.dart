@@ -1,12 +1,16 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kirim_chiqim/screens/home/widgets/list_persons.dart';
-import 'package:kirim_chiqim/widgets/app_drawer.dart';
-import '../../providers/persons.dart';
+import 'package:kirim_chiqim/logic/person/person_cubit.dart';
+import 'package:kirim_chiqim/screens/home/widgets/no_data.dart';
+import 'package:kirim_chiqim/screens/home/widgets/person_list_item.dart';
+import 'package:kirim_chiqim/screens/home/widgets/search_bar.dart';
 
-import 'package:provider/provider.dart';
+import 'package:kirim_chiqim/widgets/app_drawer.dart';
+
+import '../../logic/models/person.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -19,11 +23,8 @@ class HomeScreen extends StatelessWidget {
     bool isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      Provider.of<Persons>(context, listen: false).add(
-        name: name,
-        phoneNumber: phoneNumber,
-      );
-      // Navigator.of(context).pop();
+      BlocProvider.of<PersonCubit>(context)
+          .addPerson(name: name, phoneNumber: phoneNumber);
     }
   }
 
@@ -111,6 +112,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void openSearchBar(BuildContext context) {
+    showSearch(
+      context: context,
+      delegate: SearchBar(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,14 +132,47 @@ class HomeScreen extends StatelessWidget {
                 title: Text("Mijozlar", style: GoogleFonts.nunito()),
                 actions: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => openSearchBar(context),
                     icon: const Icon(
                       Icons.search,
                     ),
                   )
                 ],
               ),
-              const ListPersons(),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(),
+                  child: BlocBuilder<PersonCubit, PersonState>(
+                    builder: (context, state) {
+                      if (state is PersonWelcome) {
+                        return const NoData();
+                      } else if (state is PersonLoaded) {
+                        return state.persons != null &&
+                                state.persons!.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: state.persons!.length,
+                                itemBuilder: (context, index) {
+                                  Person person = state.persons![index];
+                                  return PersonListItem(person: person);
+                                },
+                              )
+                            : const NoData();
+                      } else if (state is PersonLoading) {
+                        return const CircularProgressIndicator();
+                      } else if (state is PersonError) {
+                        return Center(
+                          child: Text(
+                            state.errorMsg.toString(),
+                            style: GoogleFonts.nunito(),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),
