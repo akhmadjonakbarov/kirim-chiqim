@@ -2,10 +2,10 @@
 
 import 'package:flutter/widgets.dart';
 
+import './providerclass.dart';
 import '../database/dbhelper.dart';
 import '../database/transaction_operations.dart';
-import '../models/transaction.dart';
-import './providerclass.dart';
+import '../logic/models/transaction.dart';
 
 class Transactions extends ProviderClass {
   final dbProvider = DBHelper.instance;

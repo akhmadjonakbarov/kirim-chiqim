@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../models/person.dart';
-import '../../../providers/transactions.dart';
-import 'package:provider/provider.dart';
+import '../../../logic/cubit/transaction/transaction_cubit.dart';
+
+import '../../../logic/models/person.dart';
 
 class EditTransactionScreen extends StatefulWidget {
   Person person;
@@ -21,12 +22,12 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     bool isValid = _trFormKey.currentState!.validate();
     if (isValid) {
       _trFormKey.currentState!.save();
-
-      Provider.of<Transactions>(context, listen: false).add(
+      BlocProvider.of<TransactionCubit>(context).add(
         isEntry: isEntry,
-        personId: widget.person.id,
         moneyQuantity: moneyQuantity,
+        personId: widget.person.id,
       );
+      Navigator.of(context).pop();
     }
   }
 

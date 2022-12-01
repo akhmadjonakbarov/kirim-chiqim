@@ -1,18 +1,72 @@
+// flutter packages
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:kirim_chiqim/database/transaction_operations.dart';
 
-import 'package:kirim_chiqim/logic/models/transaction.dart';
+// my flutter packages
+import '../../../database/transaction_operations.dart';
+import '../../../logic/models/transaction.dart';
 
 part 'transaction_state.dart';
 
 class TransactionCubit extends Cubit<TransactionState> {
   TransactionCubit() : super(TransactionInitial());
 
+  double get totalSumEntry {
+    double sum = 0.0;
+    if (state.transactions != null && state.transactions!.isNotEmpty) {
+      for (var transaction in state.transactions!) {
+        if (transaction.isEntry == 1) {
+          sum = sum + transaction.quantity;
+        }
+      }
+    }
+    return sum;
+  }
+
+  double get totalSumExpenditure {
+    double sum = 0.0;
+    if (state.transactions != null && state.transactions!.isNotEmpty) {
+      for (var transaction in state.transactions!) {
+        if (transaction.isEntry != 1) {
+          sum = sum + transaction.quantity;
+        }
+      }
+    }
+    return sum;
+  }
+
+  double get profit {
+    double entry = totalSumEntry;
+    double expenditure = totalSumExpenditure;
+    return entry - expenditure;
+  }
+
+  Future<void> getTransactions({String? personId}) async {
+    List<Transaction> transactions =
+        await TransactionsOperations.getTransactions();
+
+    emit(TransactionLoading());
+
+    List<Transaction> userTransactions =
+        transactions.where((element) => element.personId == personId).toList();
+
+    emit(TransactionLoaded(transactions: userTransactions));
+
+    // state == TransactionInitial -> bu esa null qaytaradi shuning uchun ko'rsatmayap
+    // print(state);
+    // if (state.transactions != null) {
+    //   transactions = state.transactions!
+    //       .where((element) => element.id == personId)
+    //       .toList();
+
+    //   emit(TransactionLoaded(transactions: transactions));
+    // }
+  }
+
   void add({String? personId, num? moneyQuantity, int? isEntry}) {
     List<Transaction> transactions = [];
     Transaction newTransaction;
-    if (state.transactions!.isEmpty || state.transactions == null) {
+    if (state.transactions == [] || state.transactions == null) {
       transactions = [];
     } else {
       transactions = state.transactions!;
@@ -35,6 +89,7 @@ class TransactionCubit extends Cubit<TransactionState> {
         );
       }
       transactions.add(newTransaction);
+      emit(TransactionLoaded(transactions: transactions));
       TransactionsOperations.insertTransaction(
         data: newTransaction.toMap(),
       );

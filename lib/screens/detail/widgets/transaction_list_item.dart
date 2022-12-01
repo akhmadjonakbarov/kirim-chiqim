@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
-import '../../../models/transaction.dart';
+import '../../../logic/models/transaction.dart';
 
 class TransactionListItem extends StatelessWidget {
   final Transaction transaction;
@@ -14,7 +15,7 @@ class TransactionListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(top: 5),
-      color: transaction.isEntry  == 1 ? Colors.green : Colors.red,
+      color: transaction.isEntry == 1 ? Colors.green : Colors.red,
       child: ListTile(
         title: Text(
           "${transaction.quantity}",
@@ -24,7 +25,7 @@ class TransactionListItem extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          "${transaction.dateTime}",
+          DateFormat('dd/MM/yyyy HH:mm:ss').format(transaction.dateTime),
           style: GoogleFonts.nunito(color: Colors.white),
         ),
         trailing: Container(

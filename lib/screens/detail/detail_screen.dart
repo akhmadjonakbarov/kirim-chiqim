@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../models/person.dart';
-import '../../models/transaction.dart';
-import '../../providers/transactions.dart';
-import 'edit_transaction/edit_transaction_screen.dart';
+import '../../logic/cubit/transaction/transaction_cubit.dart';
+import '../../screens/home/widgets/no_data.dart';
 
+import '../../logic/models/person.dart';
+import '../../logic/models/transaction.dart';
+import 'edit_transaction/edit_transaction_screen.dart';
 import 'widgets/transaction_list_item.dart';
-import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget {
   Person person;
@@ -18,22 +19,27 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  List<Transaction> _list = [];
+  bool _init = true;
+  double profit = 0.0;
   @override
   void didChangeDependencies() {
-    Provider.of<Transactions>(context)
-        .getTransactionsByPerson(
-      personId: widget.person.id,
-    )
-        .then((value) {
-      _list = value;
-    });
+    if (_init) {
+      BlocProvider.of<TransactionCubit>(context)
+          .getTransactions(personId: widget.person.id)
+          .then(
+        (value) {
+          setState(() {
+            profit = BlocProvider.of<TransactionCubit>(context).profit;
+          });
+        },
+      );
+    }
+    _init = false;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    double profit = Provider.of<Transactions>(context).profit;
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -65,22 +71,31 @@ class _DetailScreenState extends State<DetailScreen> {
               const SizedBox(
                 height: 5,
               ),
-              Container(
-                alignment: Alignment.center,
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: profit >= 0 ? Colors.green : Colors.red,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  "$profit \nso'm",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.nunito(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
+              BlocBuilder<TransactionCubit, TransactionState>(
+                builder: (context, state) {
+                  return Container(
+                    alignment: Alignment.center,
+                    width: 180,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      color:
+                          BlocProvider.of<TransactionCubit>(context).profit >= 0
+                              ? Colors.green
+                              : Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      "${BlocProvider.of<TransactionCubit>(context).profit} \nso'm",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                      // oldin BlocBuilderga uralmagan ekan, shuning uchun bu update bo'lmagan
+                      // transaction loaded bo'lganda endi profitni olib update bo'ladi
+                    ),
+                  );
+                },
               ),
               const SizedBox(
                 height: 5,
@@ -88,13 +103,33 @@ class _DetailScreenState extends State<DetailScreen> {
               Expanded(
                 child: Container(
                   decoration: const BoxDecoration(),
-                  child: ListView.builder(
-                    itemCount: _list.length,
-                    itemBuilder: (context, index) {
-                      Transaction transaction = _list[index];
-                      return TransactionListItem(
-                        transaction: transaction,
-                      );
+                  child: BlocBuilder<TransactionCubit, TransactionState>(
+                    builder: (context, state) {
+                      if (state is TransactionWelcome) {
+                        return const NoData();
+                      } else if (state is TransactionLoaded) {
+                        return state.transactions.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: state.transactions.length,
+                                itemBuilder: (context, index) {
+                                  Transaction transaction =
+                                      state.transactions[index];
+                                  return TransactionListItem(
+                                    transaction: transaction,
+                                  );
+                                },
+                              )
+                            : const NoData();
+                      } else if (state is TransactionLoading) {
+                        return const CircularProgressIndicator();
+                      } else if (state is TransactionError) {
+                        return Text(
+                          state.errorMessage.toString(),
+                          style: GoogleFonts.nunito(),
+                        );
+                      } else {
+                        return Container();
+                      }
                     },
                   ),
                 ),

@@ -3,13 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kirim_chiqim/logic/person/person_cubit.dart';
-import 'package:kirim_chiqim/screens/home/widgets/no_data.dart';
-import 'package:kirim_chiqim/screens/home/widgets/person_list_item.dart';
-import 'package:kirim_chiqim/screens/home/widgets/search_bar.dart';
 
-import 'package:kirim_chiqim/widgets/app_drawer.dart';
-
+import '../../logic/cubit/person/person_cubit.dart';
+import '../../screens/home/widgets/no_data.dart';
+import '../../screens/home/widgets/person_list_item.dart';
+import '../../screens/home/widgets/search_bar.dart';
+import '../../widgets/app_drawer.dart';
 import '../../logic/models/person.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -25,6 +24,7 @@ class HomeScreen extends StatelessWidget {
       _formKey.currentState!.save();
       BlocProvider.of<PersonCubit>(context)
           .addPerson(name: name, phoneNumber: phoneNumber);
+      Navigator.of(context).pop();
     }
   }
 
@@ -69,14 +69,17 @@ class HomeScreen extends StatelessWidget {
                   height: 10,
                 ),
                 TextFormField(
+                  initialValue: "+998 ",
                   decoration: InputDecoration(
                     label: Text("Telefon raqam kiriting",
                         style: GoogleFonts.nunito()),
                     border: const OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (name) {
-                    if (name == null || name.isEmpty) {
+                  validator: (phoneNumber) {
+                    if (phoneNumber == null ||
+                        phoneNumber.isEmpty ||
+                        phoneNumber.length <= 3) {
                       return "Iltimos telefon raqam  kiriting";
                     }
                     return null;

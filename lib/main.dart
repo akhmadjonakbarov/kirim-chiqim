@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import './logic/cubit/person/person_cubit.dart';
+import './logic/cubit/transaction/transaction_cubit.dart';
 
-import 'providers/persons.dart';
-import 'providers/transactions.dart';
-import 'screens/screens.dart';
+import 'screens/home/home_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -12,19 +12,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: Persons(),
+        BlocProvider.value(
+          value: PersonCubit(),
         ),
-        ChangeNotifierProvider.value(
-          value: Transactions(),
-        ),
+        BlocProvider.value(
+          value: TransactionCubit(),
+        )
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.teal),
-        title: 'Material App',
         home: HomeScreen(),
       ),
     );

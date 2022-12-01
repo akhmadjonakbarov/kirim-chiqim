@@ -1,12 +1,12 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kirim_chiqim/screens/home/edit_person/edit_screen.dart';
-import 'package:provider/provider.dart';
+import './../../../logic/cubit/person/person_cubit.dart';
+import '/screens/home/edit_person_screen/edit_person_screen.dart';
 
-import '../../../models/person.dart';
-import '../../../providers/persons.dart';
+import '../../../logic/models/person.dart';
 import '../../detail/detail_screen.dart';
 
 class PersonListItem extends StatelessWidget {
@@ -17,7 +17,7 @@ class PersonListItem extends StatelessWidget {
   }) : super(key: key);
 
   void _deletePerson(BuildContext context, {String? personId}) {
-    Provider.of<Persons>(context, listen: false).delete(personId: personId);
+    BlocProvider.of<PersonCubit>(context).deletePerson(personId: personId);
   }
 
   @override

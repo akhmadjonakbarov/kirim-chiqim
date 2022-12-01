@@ -1,14 +1,28 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import '../../database/person_operations.dart';
+
+import '../../../database/person_operations.dart';
 import '../../models/person.dart';
-import 'package:meta/meta.dart';
 
 part 'person_state.dart';
 
 class PersonCubit extends Cubit<PersonState> {
   PersonCubit() : super(PersonInitial()) {
-    emit(PersonWelcome());
+    List<Person> persons = [];
+    PersonOperations.getPersons().then((value) {
+      if (value.isEmpty) {
+        emit(PersonWelcome());
+      } else {
+        persons = value;
+        emit(PersonLoaded(persons: persons));
+      }
+    });
+  }
+
+  Person getPerson({String? personId}) {
+    Person person =
+        state.persons!.firstWhere((element) => element.id == personId);
+    return person;
   }
 
   void addPerson({String? name, String? phoneNumber}) {
@@ -26,7 +40,7 @@ class PersonCubit extends Cubit<PersonState> {
         phoneNumber: phoneNumber!,
       );
       persons.add(newPerson);
-      emit(PersonLoaded(personsLoaded: persons));
+      emit(PersonLoaded(persons: persons));
       PersonOperations.insertPersons(data: newPerson.toMap());
     } catch (e) {
       emit(
@@ -49,8 +63,7 @@ class PersonCubit extends Cubit<PersonState> {
         }
         return p;
       }).toList();
-      emit(PersonLoading());
-      emit(PersonLoaded(personsLoaded: persons));
+      emit(PersonLoaded(persons: persons));
       PersonOperations.updatePerson(person: person);
     } catch (e) {
       emit(
@@ -63,9 +76,9 @@ class PersonCubit extends Cubit<PersonState> {
     List<Person> persons = state.persons!;
     try {
       persons.removeWhere((element) => element.id == personId);
-      emit(PersonDelete(personsDeleted: persons));
+      emit(PersonDelete(persons: persons));
       emit(PersonLoading());
-      emit(PersonLoaded(personsLoaded: persons));
+      emit(PersonLoaded(persons: persons));
       PersonOperations.deletePerson(personId: personId);
     } catch (e) {
       emit(PersonError(

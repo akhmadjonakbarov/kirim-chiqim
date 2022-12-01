@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../database/person_operations.dart';
-import '../models/person.dart';
+import '../logic/models/person.dart';
 import 'providerclass.dart';
 
 class Persons extends ProviderClass {

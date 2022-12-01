@@ -2,13 +2,14 @@
 
 // flutter packages
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import '../../../logic/cubit/person/person_cubit.dart';
 
+import '../../../logic/models/person.dart';
 // my packages
-import '../../../providers/persons.dart';
-import '../../screens.dart';
-import '../../../models/person.dart';
+
+import '../home_screen.dart';
 
 class EditPersonScreen extends StatelessWidget {
   Person person;
@@ -23,7 +24,7 @@ class EditPersonScreen extends StatelessWidget {
     bool isValid = _formKey.currentState!.validate();
     if (isValid) {
       _formKey.currentState!.save();
-      Provider.of<Persons>(context, listen: false).update(person: person);
+      BlocProvider.of<PersonCubit>(context).updatePerson(person: person);
       showAlert(context);
     }
   }

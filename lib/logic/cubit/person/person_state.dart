@@ -13,8 +13,8 @@ class PersonInitial extends PersonState {}
 class PersonLoading extends PersonState {}
 
 class PersonLoaded extends PersonState {
-  List<Person> personsLoaded;
-  PersonLoaded({required this.personsLoaded});
+  List<Person>? persons;
+  PersonLoaded({required this.persons}) : super(persons: persons);
 }
 
 class PersonAdded extends PersonState {
@@ -23,8 +23,8 @@ class PersonAdded extends PersonState {
 }
 
 class PersonDelete extends PersonState {
-  List<Person> personsDeleted;
-  PersonDelete({required this.personsDeleted});
+  final List<Person> persons;
+  PersonDelete({required this.persons});
 }
 
 class PersonError extends PersonState {

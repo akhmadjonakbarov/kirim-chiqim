@@ -1,6 +1,5 @@
+import '../logic/models/transaction.dart';
 import 'dbhelper.dart';
-
-import '../models/transaction.dart';
 
 class TransactionsOperations {
   static DBHelper dbHelperProvider = DBHelper.instance;

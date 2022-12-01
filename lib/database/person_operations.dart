@@ -1,4 +1,4 @@
-import '../models/person.dart';
+import '../logic/models/person.dart';
 import 'dbhelper.dart';
 
 class PersonOperations {

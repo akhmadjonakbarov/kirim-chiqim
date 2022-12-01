@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kirim_chiqim/logic/models/person.dart';
-import 'package:kirim_chiqim/logic/person/person_cubit.dart';
-import 'package:kirim_chiqim/screens/detail/detail_screen.dart';
+import '../../../logic/models/person.dart';
+import '../../../logic/cubit/person/person_cubit.dart';
+import '../../detail/detail_screen.dart';
 
 class SearchBar extends SearchDelegate {
   @override
