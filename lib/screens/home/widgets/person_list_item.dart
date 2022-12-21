@@ -16,6 +16,66 @@ class PersonListItem extends StatelessWidget {
     required this.person,
   }) : super(key: key);
 
+  void _alertAboutDeletingPerson({BuildContext? context}) {
+    showDialog(
+      context: context!,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Siz ${person.name}ni o'chirishni hohlaysizmi?",
+                style: GoogleFonts.nunito(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).errorColor,
+                    ),
+                    onPressed: () {
+                      _deletePerson(
+                        context,
+                        personId: person.id,
+                      );
+                    },
+                    child: Text(
+                      "Ha",
+                      style: GoogleFonts.nunito(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "Bekor qilish",
+                      style: GoogleFonts.nunito(
+                        fontSize: 18,
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _deletePerson(BuildContext context, {String? personId}) {
     BlocProvider.of<PersonCubit>(context).deletePerson(personId: personId);
   }
@@ -70,10 +130,7 @@ class PersonListItem extends StatelessWidget {
             IconButton(
               splashRadius: 20,
               onPressed: () {
-                _deletePerson(
-                  context,
-                  personId: person.id,
-                );
+                _alertAboutDeletingPerson(context: context);
               },
               icon: Icon(
                 Icons.delete,

@@ -60,7 +60,6 @@ class EditPersonScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   AppBar(
@@ -69,68 +68,71 @@ class EditPersonScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          initialValue: person.name,
-                          decoration: InputDecoration(
-                            label: Text("Ism kiriting",
-                                style: GoogleFonts.nunito()),
-                            border: const OutlineInputBorder(),
-                          ),
-                          validator: (name) {
-                            if (name == null || name.isEmpty) {
-                              return "Iltimos ism kiriting";
-                            }
-                            return null;
-                          },
-                          onSaved: (newName) {
-                            person.name = newName!;
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          initialValue: person.phoneNumber,
-                          decoration: InputDecoration(
-                            label: Text("Telefon raqam kiriting",
-                                style: GoogleFonts.nunito()),
-                            border: const OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (phoneNumber) {
-                            if (phoneNumber == null || phoneNumber.isEmpty) {
-                              return "Iltimos telefon raqam  kiriting";
-                            }
-                            return null;
-                          },
-                          onSaved: (newPhoneNumber) {
-                            person.phoneNumber = newPhoneNumber!.toString();
-                          },
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(),
-                          height: 40,
-                          width: 150,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _submit(context);
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            initialValue: person.name,
+                            decoration: InputDecoration(
+                              label: Text("Ism kiriting",
+                                  style: GoogleFonts.nunito()),
+                              border: const OutlineInputBorder(),
+                            ),
+                            validator: (name) {
+                              if (name == null || name.isEmpty) {
+                                return "Iltimos ism kiriting";
+                              }
+                              return null;
                             },
-                            child: Text(
-                              "O'zgartirish",
-                              style: GoogleFonts.nunito(
-                                fontSize: 20,
+                            onSaved: (newName) {
+                              person.name = newName!;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            initialValue: person.phoneNumber,
+                            decoration: InputDecoration(
+                              label: Text("Telefon raqam kiriting",
+                                  style: GoogleFonts.nunito()),
+                              border: const OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (phoneNumber) {
+                              if (phoneNumber == null || phoneNumber.isEmpty) {
+                                return "Iltimos telefon raqam  kiriting";
+                              }
+                              return null;
+                            },
+                            onSaved: (newPhoneNumber) {
+                              person.phoneNumber = newPhoneNumber!.toString();
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: const BoxDecoration(),
+                            height: 40,
+                            width: 150,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _submit(context);
+                              },
+                              child: Text(
+                                "O'zgartirish",
+                                style: GoogleFonts.nunito(
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],

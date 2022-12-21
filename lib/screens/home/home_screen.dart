@@ -128,7 +128,6 @@ class HomeScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               AppBar(

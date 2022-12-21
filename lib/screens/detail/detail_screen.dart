@@ -44,7 +44,6 @@ class _DetailScreenState extends State<DetailScreen> {
       body: SafeArea(
         child: Container(
           decoration: const BoxDecoration(),
-          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               AppBar(

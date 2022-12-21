@@ -36,7 +36,6 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
               AppBar(
